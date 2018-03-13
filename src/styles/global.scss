@@ -1,0 +1,80 @@
+/********************************************
+  Global CSS Variables
+*/
+
+//page colors
+$main-color-1: #344555;
+$main-color-2: #4c5d6f;
+$main-color-3: #404b56;
+$box-shadow-color: #525252;
+$main-text-color: #ccc;
+$secondary-color: rgb(59, 175, 218);
+$thirdary-color: #42b983;
+$page-content-bg-color: #717171;
+$sidebar-nav-border-color: #717171;
+
+//topbar settings
+$topbar-height: 80px;
+$topbar-link-transition-time: 0.5s;
+$topbar-mdl-size: 30px;
+
+//sidebar settings
+$sidebar-menu-width: 200px;
+$sidebar-nav-width: 65px;
+$sidebar-nav-transition-time: 0.5s;
+
+//page settings
+$page-content-padding: 10px;
+
+//selection
+::selection {
+  background: $thirdary-color; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: $thirdary-color; /* Gecko Browsers */
+}
+
+//a links
+a
+{
+  text-decoration: none;
+}
+
+a:focus
+{
+  outline: inherit;
+}
+
+a:visited
+{
+  color: inherit;
+}
+
+//input
+input:focus
+{
+  outline: inherit;
+}
+
+/********************************************
+  Global CSS classes
+*/
+
+//no text highlight
+%noselect
+{
+-webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none; /* Safari */
+ -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+}
+
+//box sizing border-box
+%box-sizing-border
+{
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
