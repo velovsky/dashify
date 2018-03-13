@@ -50,6 +50,13 @@ a:visited
   color: inherit;
 }
 
+a:-webkit-any-link 
+{
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 //input
 input:focus
 {
