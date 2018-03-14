@@ -11,9 +11,6 @@
     </div>
     <div class="dashify-side-menu"
         :class="{ close: isClosed }">
-      <!-- <div v-for="(user,index) in users" :key="index">
-        user: {{ user.name }} id: {{ user.id }}
-      </div> -->
       <test v-if="componentSelected === 'teste'"></test>
       <config-dashboard v-else-if="componentSelected === 'ConfigDashboard'"></config-dashboard>
       <div v-else>TESTING!</div>
@@ -83,10 +80,11 @@ export default
   height: calc(100% - #{$topbar-height});
 }
 
+//side-menu
 .dashify-side-menu
 {
   @extend %box-sizing-border;
-  padding: 20px;
+  padding: 20px 0px 0px 20px;
   position: absolute;
   width: $sidebar-menu-width;
   height: 100%;
@@ -97,6 +95,11 @@ export default
   color: $main-text-color;
   z-index: 1;
   transition: width $sidebar-nav-transition-time;
+}
+
+.dashify-side-menu > div
+{
+  @include fade-in-animation($sidebar-nav-transition-time);
 }
 
 .dashify-side-menu.close
@@ -110,6 +113,7 @@ export default
   visibility: hidden;
 }
 
+//side-nav
 .dashify-side-nav
 {
   display: flex;

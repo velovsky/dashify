@@ -2,7 +2,7 @@
 td.selected
 {
 	color: rgb(210,118,4);
-  border-color: #ff8d00 !important;
+  border-color: #ff8d00;
 }
 
 /* hidden cells: this class shouldn't be changed/deleted */

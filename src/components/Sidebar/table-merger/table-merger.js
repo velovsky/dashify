@@ -9,10 +9,14 @@
  *
  */
 
+import $ from 'jquery'
+
 //PARAMS: required string table_id (e.g. "#table");
 //        optional string merge_cell_class (e.g. "merge_cells");
-function table_merger(table_id,merge_cell_class)
+export default
 {
+  table_merger(table_id,merge_cell_class)
+  {
     //Configuration
     //cell class to be merged
     this.cell_class = merge_cell_class === undefined ? 'selected' : merge_cell_class;
@@ -95,7 +99,7 @@ function table_merger(table_id,merge_cell_class)
           var cells = $(current_cell.parentElement).nextAll()[current_cell.rowSpan-1];
           
           if(!cells)
-           continue;
+            continue;
           
           var next_cell = cells.children[current_cell.cellIndex];
 
@@ -121,4 +125,5 @@ function table_merger(table_id,merge_cell_class)
         }
       }
     }
+  }
 }

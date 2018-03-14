@@ -19,7 +19,7 @@ $topbar-link-transition-time: 0.5s;
 $topbar-mdl-size: 30px;
 
 //sidebar settings
-$sidebar-menu-width: 200px;
+$sidebar-menu-width: 255px;
 $sidebar-nav-width: 65px;
 $sidebar-nav-transition-time: 0.5s;
 
@@ -34,10 +34,23 @@ $page-content-padding: 10px;
   background: $thirdary-color; /* Gecko Browsers */
 }
 
+//h2
+h2
+{
+  margin-top: 0px;
+  color: $thirdary-color;
+}
+
 //a links
 a
 {
+  color: inherit;
   text-decoration: none;
+}
+
+a:hover
+{
+  color: inherit;
 }
 
 a:focus
@@ -84,4 +97,50 @@ input:focus
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+/********************************************
+  Global CSS mixins
+*/
+
+@mixin fade-in-animation($duration)  //in seconds (s)
+{
+  -webkit-animation: fadein $duration; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein $duration; /* Firefox < 16 */
+  -ms-animation: fadein $duration; /* Internet Explorer */
+  -o-animation: fadein $duration; /* Opera < 12.1 */
+  animation: fadein $duration;
+}
+
+/********************************************
+  Global CSS Keyframes
+*/
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
