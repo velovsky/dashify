@@ -15,7 +15,7 @@ import $ from 'jquery'
 //        optional string merge_cell_class (e.g. "merge_cells");
 export default
 {
-  table_merger(table_id,merge_cell_class)
+  merge(table_id,merge_cell_class)
   {
     //Configuration
     //cell class to be merged
@@ -125,5 +125,14 @@ export default
         }
       }
     }
+  },
+  restoreOriginal(table_id)
+  {
+    if(!table_id)
+      console.error("no input");
+
+    var cells = $(table_id).find("td"); 
+    cells.removeClass("hidden"); //remove hidden cells
+    cells.attr({colSpan: 1, rowSpan: 1}); //restore original size
   }
 }

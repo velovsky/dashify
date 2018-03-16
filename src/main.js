@@ -2,18 +2,21 @@ import 'es6-promise/auto' //required in IE
 //Vue
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueMdc from 'vue-mdc'
+import 'vue-mdc/dist/vue-mdc.css'
 //Components
 import App from './App.vue'
 //Routing
-import Home from './views/Home'
+import Dashboard from './views/Dashboard'
 import Users from './views/Users'
 //Store
 import { store } from './store';
 
+Vue.use(VueMdc);
 Vue.use(VueRouter);
 
 const routes = [
-	{name: 'Dashboard', path: '/', component: Home},
+	{name: 'Dashboard', path: '/', component: Dashboard},
 	{name: 'Map', path: '/Users/:teamId', component: Users}
 ]
 
@@ -29,15 +32,6 @@ var vm = new Vue(
 	router,
 	store,
 	render: h => h(App)
-	// ,
-	// created: function()
-	// {
-	// 	var page = this.$routes.name;
-	// 	if(page === 'Dashboard')
-
-	// }
-	// template: '<App/>',
-	// components: { App }	
 });
 
 console.log(vm);

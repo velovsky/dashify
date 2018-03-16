@@ -14,6 +14,9 @@ import Sidebar from './components/Sidebar/Sidebar'
 import PageContent from './components/PageContent'
 // import Test from './components/test'
 
+//Getters
+import { mapGetters } from 'vuex';
+
 export default 
 {
   name: 'app',
@@ -22,11 +25,16 @@ export default
   {
     this.closeSearch();
   },
+  computed:
+  {
+    ...mapGetters(['isSearchClosed'])
+  },
   methods:
   {
     closeSearch: function()
     {
-      this.$store.commit('updateSearchState',true);
+      if(!this.isSearchClosed)
+        this.$store.commit('updateSearchState',true);
     }
   }
 }

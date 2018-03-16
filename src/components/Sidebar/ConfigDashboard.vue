@@ -26,11 +26,12 @@
       </table>
     </div>
     <div class="config-menu">
-      <button v-for="(config,index) in configs" 
+      <MdcButton v-ripple raised primary
+              v-for="(config,index) in configs" 
               :key="index"
               @click="config.clickClb">
         {{ config.uiName }}
-      </button>
+      </MdcButton>
     </div>
   </div>
 </template>
@@ -60,7 +61,7 @@ export default {
       configs:
       [
         {uiName: "MERGE", mdlIcon: "", clickClb: this.merge},
-        {uiName: "SAVE", mdlIcon: "", clickClb: this.test}
+        {uiName: "SAVE", mdlIcon: "", clickClb: this.save}
       ]
     }
   },
@@ -84,6 +85,10 @@ export default {
     },
     selectGrid: function(x,y)
     {
+      //reset table state
+      var layoutTable = document.getElementById(this.gridLayout.tableId);
+      tableMerger.restoreOriginal(layoutTable);
+
       this.gridLayout.numRows = x;
       this.gridLayout.numCols = y;
     },
@@ -93,12 +98,42 @@ export default {
     },
     merge: function()
     {
-      console.log(this);
-      tableMerger.table_merger('#'+this.gridLayout.tableId);
+      var layoutTable = document.getElementById(this.gridLayout.tableId);
+      tableMerger.merge(layoutTable);
     },
-    test: function()
+    save: function()
     {
-      console.log("OK");
+      if(this.gridLayout.numRows === 0 || this.gridLayout.numCols === 0)
+        return; //ignore
+
+      //reset
+      var currentConfig = [];
+
+      var layoutTable = document.getElementById(this.gridLayout.tableId);
+      var tr = jQuery(layoutTable).find("tr");
+
+      for(var i=0; i < tr.length; i++) //row
+      {
+        var row = [];
+        var cells = jQuery(tr[i]).find("td");
+        
+        for(var j=0; j < cells.length; j++) //cells
+        {
+          var obj = { cellIndex: undefined, rowSpan: undefined, colSpan: undefined, panelId: undefined, display: "none" };
+          
+          for(var prop in obj)
+            obj[prop] = cells[j][prop];
+          
+          obj.display = getComputedStyle(cells[j], null).display;
+
+          row.push(obj);
+        }
+        currentConfig.push(row);
+      }
+      //update state
+      this.$store.commit('updateGridLayoutConfig',currentConfig);
+      //go to dashboard
+      this.$router.push({ name: 'Dashboard' });
     }
   }
 }
@@ -108,7 +143,7 @@ export default {
 
 @import './table-merger/table-merger.css';
 
-$config-menu-height: 50px;
+$config-menu-height: 60px;
 
 .configure-separator
 {

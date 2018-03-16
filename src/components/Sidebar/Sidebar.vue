@@ -42,13 +42,6 @@ export default
       ]
     }
   },
-  computed: 
-  {
-    users: function()
-    {
-      return this.$store.state.users;
-    }
-  },
   methods:
   {
     toggleSidebar: function(icon)
@@ -84,7 +77,7 @@ export default
 .dashify-side-menu
 {
   @extend %box-sizing-border;
-  padding: 20px 0px 0px 20px;
+  padding: 20px 10px 0px 10px;
   position: absolute;
   width: $sidebar-menu-width;
   height: 100%;
@@ -110,7 +103,7 @@ export default
 
 .dashify-side-menu.close *
 {
-  visibility: hidden;
+  display: none;
 }
 
 //side-nav

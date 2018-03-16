@@ -9,7 +9,7 @@ export const store = new Vuex.Store(
   {
     searchClosed: undefined,
     currentPage: { name: undefined, navId: undefined, oldId: undefined },
-    registrations:[],
+    gridLayoutConfig: [],
     users: [
         {id: 1, name:"Mother"},
         {id: 2, name:"Father"},
@@ -22,6 +22,10 @@ export const store = new Vuex.Store(
     users: function(state)
     {
       return state.users;
+    },
+    getGridLayout: function(state)
+    {
+      return state.gridLayoutConfig;
     },
     getPage: function(state)
     {
@@ -37,6 +41,10 @@ export const store = new Vuex.Store(
     updateSearchState: function(state,isClosed)
     {
       state.searchClosed = isClosed;
+    },
+    updateGridLayoutConfig: function(state,currentGrid)
+    {
+      state.gridLayoutConfig = currentGrid;
     }
   }
 })
