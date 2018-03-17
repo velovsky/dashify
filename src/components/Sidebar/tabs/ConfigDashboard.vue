@@ -4,7 +4,8 @@
       <h2>Dashboard Setup</h2>
       <table 
         :id="gridChooser.tableId" 
-        :style="{ width: gridChooser.numRows * gridChooser.cellWidth + 'px', height: gridChooser.numRows * gridChooser.cellWidth + 'px'}"  
+        :style="{ width: gridChooser.numRows * gridChooser.cellWidth + 'px',
+         height: gridChooser.numRows * gridChooser.cellWidth + 'px'}"  
         class="grid-chooser">
         <tr v-for="(x,index) in gridChooser.numRows" :key="index">
           <td v-for="(y,index) in gridChooser.numCols" :key="index">
@@ -198,14 +199,14 @@ table.grid-chooser td div
 table.grid-chooser td.selected div,
 table.grid-chooser td div:hover
 {
-  border-color: $thirdary-color;
+  border-color: $secondary-color;
 }
 
 //Grid Layout
 table.grid-layout
 {
   @extend %table-setup;
-  margin-top: 20px;
+  margin-top: 15px;
   border-spacing: 10px;
   border-collapse: separate;
   width: 98%;
@@ -220,7 +221,7 @@ table.grid-layout td
 
 table.grid-layout td.selected
 {
-  border-color: $thirdary-color;
+  border-color: $secondary-color;
 }
 
 </style>

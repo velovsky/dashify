@@ -20,8 +20,8 @@
 
 <script>
 //Sidebar Components
-import test from './test'
-import ConfigDashboard from './ConfigDashboard'
+import test from './tabs/test'
+import ConfigDashboard from './tabs/ConfigDashboard'
 
 export default
 {
@@ -124,6 +124,11 @@ export default
   border-bottom: none;
 }
 
+.dashify-side-nav .dashify-side-icon:last-child
+{
+  border-top: none;
+}
+
 .dashify-side-nav .dashify-side-icon
 {
   @extend %noselect;
@@ -137,15 +142,15 @@ export default
 
 .dashify-side-nav .dashify-side-icon:hover
 {
-  color: $secondary-color;
-  box-shadow: inset 5px 0px $secondary-color;
+  color: $thirdary-color;
+  box-shadow: inset 5px 0px $thirdary-color;
 }
 
 .dashify-side-nav .dashify-side-icon.selected
 {
-  color: $secondary-color;
+  color: $thirdary-color;
   background-color: $main-color-2;
-  box-shadow: inset 5px 0px $secondary-color;
+  box-shadow: inset 5px 0px $thirdary-color;
 }
 
 .dashify-side-nav .dashify-side-icon i

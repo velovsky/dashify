@@ -1,6 +1,6 @@
 <template>
   <div class="dashify-page-content">
-    <router-view></router-view>
+    <router-view class="router-class"></router-view>
   </div>
 </template>
 
@@ -28,6 +28,11 @@ export default
   padding: 10px;
   background-color: $page-content-bg-color;
   box-shadow: inset 1px 5px 4px 0px $box-shadow-color;
+}
+
+.dashify-page-content .router-class
+{
+  @include fade-in-animation($page-content-transition-time);
 }
 
 </style>

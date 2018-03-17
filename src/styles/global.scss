@@ -8,8 +8,8 @@ $main-color-2: #4c5d6f;
 $main-color-3: #404b56;
 $box-shadow-color: #525252;
 $main-text-color: #ccc;
-$secondary-color: rgb(59, 175, 218);
-$thirdary-color: #42b983;
+$secondary-color: #42b983;
+$thirdary-color: #3bafda;
 $page-content-bg-color: #717171;
 $sidebar-nav-border-color: #717171;
 
@@ -24,14 +24,15 @@ $sidebar-nav-width: 65px;
 $sidebar-nav-transition-time: 0.5s;
 
 //page settings
+$page-content-transition-time: 0.5s;
 $page-content-padding: 10px;
 
 //selection
 ::selection {
-  background: $thirdary-color; /* WebKit/Blink Browsers */
+  background: $secondary-color; /* WebKit/Blink Browsers */
 }
 ::-moz-selection {
-  background: $thirdary-color; /* Gecko Browsers */
+  background: $secondary-color; /* Gecko Browsers */
 }
 
 //h2
@@ -39,7 +40,7 @@ h2
 {
   margin-top: 0px;
   text-align: center;
-  color: $thirdary-color;
+  color: $secondary-color;
 }
 
 //a links
@@ -80,7 +81,7 @@ input:focus
 //mdc button
 .mdc-button
 {
-  background-color: $thirdary-color;
+  background-color: $secondary-color;
 }
 
 /********************************************

@@ -1,7 +1,9 @@
 <template>
   <div class="dashify-topbar">
     <div class="logo">
-      <i class="fas fa-barcode fa-4x"></i>
+      <!-- <i class="fas fa-barcode fa-4x"></i> -->
+      <img src="../assets/logo.png">
+      <span>DASHIFY</span>
     </div>
     <div class="link-container">
       <router-link tag="div" v-for="(link,index) in linkContainer"
@@ -94,6 +96,40 @@ export default
 {
   display: flex;
   align-items: center;
+  height: 80%;
+  width: 100px;
+}
+
+@media only screen and (max-width: 600px)
+{
+  .dashify-topbar .logo img
+  {
+    @include fade-in-animation($topbar-link-transition-time);
+    display: inherit !important;
+  }
+
+  .dashify-topbar .logo span
+  {
+    display: none;
+  }
+}
+
+.dashify-topbar .logo img
+{
+  display: none;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Faster+One');
+
+.dashify-topbar .logo span
+{
+  @include fade-in-animation($topbar-link-transition-time);
+  margin-left: 10px;
+  font-family: 'Faster One';
+  font-size: 34px;
+  color: $secondary-color;
 }
 
 .dashify-topbar .link-container
@@ -149,14 +185,14 @@ export default
 
 .dashify-topbar .link-container .link:hover
 {
-  color: $secondary-color;
-  box-shadow: 0px -8px 0px 0px $secondary-color;  
+  color: $thirdary-color;
+  box-shadow: 0px -8px 0px 0px $thirdary-color;  
 }
 
 .dashify-topbar .link-container .link.router-link-exact-active
 {
-  color: $thirdary-color;
-  box-shadow: 0px -8px 0px 0px $thirdary-color;
+  color: $secondary-color;
+  box-shadow: 0px -8px 0px 0px $secondary-color;
 }
 
 .dashify-topbar .link-container .link a
