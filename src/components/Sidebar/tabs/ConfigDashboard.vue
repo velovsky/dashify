@@ -1,31 +1,35 @@
 <template>
   <div class="configure-separator">
-    <div class="configure-content">
-      <h2>Dashboard Setup</h2>
-      <table 
-        :id="gridChooser.tableId" 
-        :style="{ width: gridChooser.numRows * gridChooser.cellWidth + 'px',
-         height: gridChooser.numRows * gridChooser.cellWidth + 'px'}"  
-        class="grid-chooser">
-        <tr v-for="(x,index) in gridChooser.numRows" :key="index">
-          <td v-for="(y,index) in gridChooser.numCols" :key="index">
-            <div @mouseover="hoverFX(x,y)"
-                @click="selectGrid(x,y)">
-            </div>
-          </td>
-        </tr>
-      </table>
-      <table :id="gridLayout.tableId" class="grid-layout">
-        <tbody>
-          <tr v-for="(x,index) in gridLayout.numRows" :key="index">
-            <td v-for="(y,index) in gridLayout.numCols" 
-              :key="index"
-              @click="selectedCell">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- <div class="configure-content"> -->
+    <vue-scrollbar class="configure-content" ref="scrollbar"> 
+        <div style="min-width:100%">
+          <h2>Dashboard Setup</h2>
+          <table 
+            :id="gridChooser.tableId" 
+            :style="{ width: gridChooser.numRows * gridChooser.cellWidth + 'px',
+            height: gridChooser.numRows * gridChooser.cellWidth + 'px'}"  
+            class="grid-chooser">
+            <tr v-for="(x,index) in gridChooser.numRows" :key="index">
+              <td v-for="(y,index) in gridChooser.numCols" :key="index">
+                <div @mouseover="hoverFX(x,y)"
+                    @click="selectGrid(x,y)">
+                </div>
+              </td>
+            </tr>
+          </table>
+          <table :id="gridLayout.tableId" class="grid-layout">
+            <tbody>
+              <tr v-for="(x,xIndex) in gridLayout.numRows" :key="xIndex">
+                <td v-for="(y,yIndex) in gridLayout.numCols" 
+                  :key="yIndex"
+                  @click="selectedCell">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </vue-scrollbar>
+    <!-- </div> -->
     <div class="config-menu">
       <MdcButton v-ripple raised primary
               v-for="(config,index) in configs" 
@@ -38,11 +42,16 @@
 </template>
 
 <script>
+import VueScrollbar from 'vue2-scrollbar'
+import 'vue2-scrollbar/dist/style/vue2-scrollbar.css'
 import jQuery from 'jquery'
 import tableMerger from './table-merger/table-merger.js'
+//Getters
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'configdashboard',
+  components: { VueScrollbar },
   data()
   {
     return{
@@ -65,6 +74,35 @@ export default {
         {uiName: "SAVE", mdlIcon: "", clickClb: this.save}
       ]
     }
+  },
+  created: function()
+  {
+    //restore grid state for config
+    if(this.getGridLayout.length === 0)
+      return;
+
+    this.gridLayout.numRows = this.getGridLayout.length;
+    this.gridLayout.numCols = this.getGridLayout[0].length;
+  },
+  mounted: function()
+  {
+    //set merge state
+    var layoutTable = document.getElementById(this.gridLayout.tableId);
+    var tr = jQuery(layoutTable).find("tr");
+    for(var i=0; i < tr.length; i++)
+    {
+      var cells = jQuery(tr[i]).find("td");
+      for(var j=0; j < cells.length; j++)
+      {
+        cells[j].setAttribute("rowSpan",this.getGridLayout[i][j].rowSpan);
+        cells[j].setAttribute("colSpan",this.getGridLayout[i][j].colSpan);
+        cells[j].style.display = this.getGridLayout[i][j].display;
+      }
+    }
+  },
+  computed:
+  {
+    ...mapGetters(['getGridLayout'])
   },
   methods:
   {
@@ -154,9 +192,10 @@ $config-menu-height: 60px;
 
 .configure-separator .configure-content
 {
-  height: calc( 100% - #{$config-menu-height});
-  overflow-x: hidden;
-  overflow-y: auto;
+  max-height: calc( 100% - #{$config-menu-height});
+  background-color: inherit;
+  // overflow-x: hidden;
+  // overflow-y: hidden;
 }
 
 .configure-separator .config-menu
@@ -215,6 +254,7 @@ table.grid-layout
 
 table.grid-layout td
 {
+  @include fade-in-animation($sidebar-table-config-time);
   text-align: center;
   border: 1px solid $main-text-color;
 }

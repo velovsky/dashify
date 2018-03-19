@@ -132,6 +132,7 @@ export default
       console.error("no input");
 
     var cells = $(table_id).find("td"); 
+    cells.css("display","table-cell");
     cells.removeClass("hidden"); //remove hidden cells
     cells.attr({colSpan: 1, rowSpan: 1}); //restore original size
   }

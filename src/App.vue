@@ -46,6 +46,7 @@ html, body
 {
   height: 100%;
   margin: auto;
+  overflow-y: hidden;
 }
 
 #app {

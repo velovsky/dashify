@@ -8,5 +8,5 @@ td.selected
 /* hidden cells: this class shouldn't be changed/deleted */
 td.hidden
 {
-	display: none;
+	display: none !important;
 }

@@ -9,12 +9,15 @@
         <i class="material-icons">{{ icon.mdlIcon }}</i>
       </div>
     </div>
+    <transition name="teste">
     <div class="dashify-side-menu"
-        :class="{ close: isClosed }">
-      <test v-if="componentSelected === 'teste'"></test>
-      <config-dashboard v-else-if="componentSelected === 'ConfigDashboard'"></config-dashboard>
-      <div v-else>TESTING!</div>
+        :class="{ close: isClosed }"
+        :id="sideMenu.id">
+      <test v-if="componentSelected === 'teste'" :class="{ forceClose: isClosed }"></test>
+      <config-dashboard v-else-if="componentSelected === 'ConfigDashboard'" :class="{ forceClose: isClosed }"></config-dashboard>
+      <div v-else :class="{ forceClose: isClosed }">TESTING!</div>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -30,7 +33,6 @@ export default
   data()
   {
     return{
-      title: "sidebar",
       isClosed: true,
       iconSelected: undefined,
       componentSelected: undefined,
@@ -39,7 +41,11 @@ export default
         {id: 1, mdlIcon: "accessibility", isSelected: false, componentSelected: 'teste'},
         {id: 2, mdlIcon: "3d_rotation", isSelected: false, componentSelected: ''},
         {id: 3, mdlIcon: "view_quilt", isSelected: false, componentSelected: 'ConfigDashboard'}
-      ]
+      ],
+      sideMenu:
+      {
+        id: "sideMenu"
+      }
     }
   },
   methods:
@@ -84,7 +90,7 @@ export default
   margin-left: $sidebar-nav-width;
   background: linear-gradient(to right, #{$main-color-2}, #{$main-color-3});
   border-top: 1px solid $sidebar-nav-border-color;
-  box-shadow: 5px 1px 4px 0px $box-shadow-color;
+  box-shadow: 5px 1px 4px 0px rgba(82, 82, 82, 0.3);
   color: $main-text-color;
   z-index: 1;
   transition: width $sidebar-nav-transition-time;
@@ -92,6 +98,9 @@ export default
 
 .dashify-side-menu > div
 {
+  transition: opacity 0s linear 0.5s, visibility 0s linear 0.5s;
+  opacity: 1;
+  visibility: visible;
   @include fade-in-animation($sidebar-nav-transition-time);
 }
 
@@ -101,9 +110,11 @@ export default
   width: 0px;
 }
 
-.dashify-side-menu.close *
+.dashify-side-menu.close > div, .forceClose
 {
-  display: none;
+  transition: opacity 0s, visibility 0s;
+  opacity: 0;
+  visibility: hidden;
 }
 
 //side-nav

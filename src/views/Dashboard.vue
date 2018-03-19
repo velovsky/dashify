@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard">
-    <!-- <h1>Homepage</h1> -->
     <table>
       <tbody>
         <tr v-for="(x,xIndex) in getGridLayout.length" :key="xIndex">
