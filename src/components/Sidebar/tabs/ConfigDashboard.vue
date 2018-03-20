@@ -192,10 +192,10 @@ $config-menu-height: 60px;
 
 .configure-separator .configure-content
 {
-  max-height: calc( 100% - #{$config-menu-height});
+  height: calc( 100% - #{$config-menu-height});
   background-color: inherit;
-  // overflow-x: hidden;
-  // overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .configure-separator .config-menu

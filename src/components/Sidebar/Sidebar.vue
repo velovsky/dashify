@@ -11,11 +11,12 @@
     </div>
     <transition name="teste">
     <div class="dashify-side-menu"
+        ref="sideMenu"
         :class="{ close: isClosed }"
         :id="sideMenu.id">
-      <test v-if="componentSelected === 'teste'" :class="{ forceClose: isClosed }"></test>
-      <config-dashboard v-else-if="componentSelected === 'ConfigDashboard'" :class="{ forceClose: isClosed }"></config-dashboard>
-      <div v-else :class="{ forceClose: isClosed }">TESTING!</div>
+      <test v-if="componentSelected === 'teste'" style="display:none;"></test>
+      <config-dashboard v-else-if="componentSelected === 'ConfigDashboard'" style="display:none;"></config-dashboard>
+      <div v-else style="display:none;">TESTING!</div>
     </div>
     </transition>
   </div>
@@ -52,6 +53,9 @@ export default
   {
     toggleSidebar: function(icon)
     {
+      var oldStatus = this.isClosed; //FX solution TODO: study vue transitions and implement
+      this.$refs.sideMenu.classList.remove("xpto");
+
       //toggle side menu
       if(this.iconSelected === icon || this.isClosed)
         this.isClosed = !this.isClosed;
@@ -64,7 +68,19 @@ export default
 
       //reference new selected icon
       this.iconSelected = icon;
-      this.componentSelected = icon.componentSelected;
+      if(oldStatus && !this.isClosed) //quick workaround for the display FX. Had trouble with transition & display
+      {
+        setTimeout(function() 
+        { 
+          this.componentSelected = icon.componentSelected;
+          this.$refs.sideMenu.classList.add("xpto");
+        }.bind(this), 300); //has to match the FX timer
+      }
+      else
+      {
+        this.componentSelected = icon.componentSelected;
+        this.$refs.sideMenu.classList.add("xpto");
+      }
     }
   }
 }
@@ -96,11 +112,14 @@ export default
   transition: width $sidebar-nav-transition-time;
 }
 
+.dashify-side-menu.xpto > div
+{
+  display: inherit !important;
+}
+
 .dashify-side-menu > div
 {
-  transition: opacity 0s linear 0.5s, visibility 0s linear 0.5s;
-  opacity: 1;
-  visibility: visible;
+  display: none;
   @include fade-in-animation($sidebar-nav-transition-time);
 }
 
@@ -110,11 +129,9 @@ export default
   width: 0px;
 }
 
-.dashify-side-menu.close > div, .forceClose
+.dashify-side-menu.close > div, //.forceClose
 {
-  transition: opacity 0s, visibility 0s;
-  opacity: 0;
-  visibility: hidden;
+  display: none;
 }
 
 //side-nav
