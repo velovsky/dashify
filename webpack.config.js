@@ -44,7 +44,12 @@ module.exports = {
             'scss': [
               'vue-style-loader',
               'css-loader',
-              'sass-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  includePaths: [path.resolve(__dirname,'node_modules')]
+                }
+              },
               {
                 loader: 'sass-resources-loader',
                 options: {
@@ -62,7 +67,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: 'babel-loader',   
         exclude: /node_modules/
       },
       {
@@ -76,7 +81,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      'vue-mdc-adapter': 'vue-mdc-adapter/components'
     },
     extensions: ['*', '.js', '.vue', '.json']
   },

@@ -17,7 +17,7 @@
       </router-link>
     </div>
     <div class="search"
-         @click="stopPropragation()">
+         @click="stopPropragation">
       <i class="material-icons"
          @click="searchFunction()">search</i>
       <input 
@@ -30,6 +30,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import jQuery from 'jquery';
 
 export default
 {
@@ -51,15 +52,9 @@ export default
   },
   methods:
   {
-    stopPropragation: function(e)
+    stopPropragation: function(event)
     {
-      if (!e)
-       e = window.event;
-
-      //IE9 & Other Browsers
-      if (e.stopPropagation) {
-        e.stopPropagation();
-      }
+      event.stopPropagation();
     },
     searchFunction: function()
     {

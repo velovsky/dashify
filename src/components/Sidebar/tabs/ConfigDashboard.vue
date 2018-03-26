@@ -1,6 +1,9 @@
 <template>
   <div class="configure-separator">
     <!-- <div class="configure-content"> -->
+    <div class="overlay-page"
+         v-if="page.overlayed">
+    </div>
     <vue-scrollbar class="configure-content" ref="scrollbar"> 
         <div style="min-width:100%">
           <h2>Dashboard Setup</h2>
@@ -23,6 +26,8 @@
                 <td v-for="(y,yIndex) in gridLayout.numCols" 
                   :key="yIndex"
                   @click="selectedCell">
+                  <div @click="configPanel">
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -31,12 +36,43 @@
     </vue-scrollbar>
     <!-- </div> -->
     <div class="config-menu">
-      <MdcButton v-ripple raised primary
+      <mdc-button raised
               v-for="(config,index) in configs" 
               :key="index"
               @click="config.clickClb">
         {{ config.uiName }}
-      </MdcButton>
+      </mdc-button>
+    </div>
+    <div ref="popup" 
+         style="display: none"
+         class="panel-pop-up">
+      <div class="window-ui">
+        <mdc-button raised
+          @click="page.popup.header.clickClb">
+          <i class="material-icons">{{page.popup.header.mdlIcon}}</i>
+        </mdc-button>
+      </div>
+      <div class="window-body">
+        <mdc-select v-model="selected" label="Select Panel">
+          <mdc-option v-for="(list,index) in getPanelsList" :value="list.id" :key="index">
+            {{ list.uiName }}
+          </mdc-option>
+        </mdc-select>
+        <span>Selected: {{ selected }}</span>
+        <div>More Options....</div>
+        <div class="radios">
+          <mdc-radio v-model="answer" value="a" name="radios" label="Yes for sure"  />
+          <mdc-radio v-model="answer" value="b" name="radios" label="definitely NO!" />
+          <mdc-radio v-model="answer" value="c" name="radios" label="I guess"  checked />
+        </div>
+        <span>Answer: {{ answer }}</span>
+      </div>
+      <div class="window-submit">
+        <mdc-button raised
+          @click="page.popup.submit.clickClb">
+            {{ page.popup.submit.uiName }}
+        </mdc-button>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +91,8 @@ export default {
   data()
   {
     return{
+      selected: '',
+      answer: '',
       gridChooser: 
       {
         tableId: "gridChooserTable",
@@ -72,7 +110,16 @@ export default {
       [
         {uiName: "MERGE", mdlIcon: "", clickClb: this.merge},
         {uiName: "SAVE", mdlIcon: "", clickClb: this.save}
-      ]
+      ],
+      page:
+      {
+        overlayed: false,
+        popup: 
+        {
+          header: {uiName: "CLOSE", mdlIcon: "close", clickClb: this.closePanel},
+          submit: {uiName: "SUBMIT", mdlIcon: "", clickClb: this.closePanel}
+        }
+      }
     }
   },
   created: function()
@@ -102,10 +149,27 @@ export default {
   },
   computed:
   {
-    ...mapGetters(['getGridLayout'])
+    ...mapGetters(['getGridLayout','getPanelsList'])
   },
   methods:
   {
+    configPanel: function(event)
+    {
+      event.stopPropagation();
+
+      this.page.overlayed = true;
+
+      //set overlay and pop up config window
+      var popup = jQuery(this.$refs.popup);
+      popup.fadeIn(500); //TODO: for some reason css fade in animation isn't working
+
+      event.currentTarget.classList.add("filled");
+    },
+    closePanel: function()
+    {
+      var popup = jQuery(this.$refs.popup);
+      popup.fadeOut(500,function(){ this.page.overlayed = false }.bind(this)); //TODO: for some reason css fade in animation isn't working
+    },
     hoverFX: function(x,y)
     {
       var table = document.getElementById(this.gridChooser.tableId); //get table
@@ -179,7 +243,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 @import './table-merger/table-merger.css';
 
 $config-menu-height: 60px;
@@ -259,9 +322,119 @@ table.grid-layout td
   border: 1px solid $main-text-color;
 }
 
+table.grid-layout td div.filled
+{
+  background: linear-gradient(to top, $secondary-color 34%, $thirdary-color 65%);
+}
+
+table.grid-layout td div
+{
+  width: 10px;
+  height: 10px;
+  border: 1px solid $secondary-color;
+  -moz-border-radius: 5px;
+  background: linear-gradient(to top, rgba(0,0,0,0) 34%, $thirdary-color 65%);
+  background-size: 100% 300%;
+  background-position: left bottom;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  margin: auto;
+  transition: all 0.5s linear;
+}
+
+table.grid-layout td div:hover
+{
+  border-color: $thirdary-color;
+  background-position: right top;
+}
+
 table.grid-layout td.selected
 {
   border-color: $secondary-color;
+}
+
+//Pop UP
+$header-height: 36px;
+$submit-menu: 40px;
+
+.panel-pop-up
+{
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: #344555;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  margin-top: 10vh;
+  margin-left: 18vw;
+  height: 80vh;
+  width: 72vw;
+  z-index: 3;
+}
+
+.panel-pop-up .window-ui
+{
+  display: flex;
+  flex-direction: row-reverse;
+  height: $header-height;
+  width: 100%;
+}
+
+.panel-pop-up .window-ui .mdc-button
+{
+  margin-right: 4px;
+}
+
+.panel-pop-up .window-ui i
+{
+  font-size: 26px;
+  vertical-align: middle;
+}
+
+.panel-pop-up .window-body
+{
+  @extend %box-sizing-border;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: calc(100% - 20px - #{$header-height} - #{$submit-menu});
+  width: 100%;
+}
+
+.panel-pop-up .window-body .radios
+{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.panel-pop-up .window-submit
+{
+  display: flex;
+  justify-content: center;
+  height: $submit-menu;
+  width: 100%;
+}
+
+.panel-pop-up .window-submit .mdc-button
+{
+  width: 60%;
+}
+
+//mdc override for pop-up
+.panel-pop-up .mdc-select
+{
+  width: 50%;
+}
+
+.overlay-page
+{
+  @include background-overlay(2);
+}
+
+.mdc-select
+{
+  margin-bottom: 10px;
 }
 
 </style>

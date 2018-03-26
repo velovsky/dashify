@@ -79,11 +79,96 @@ input:focus
   outline: inherit;
 }
 
-//mdc button
+//mdc button overrides
 .mdc-button
 {
-  background-color: $secondary-color;
+  color: white;
 }
+
+.mdc-select__label, .mdc-select__surface
+{
+  color: $thirdary-color !important;
+}
+
+.mdc-select__bottom-line
+{
+  background-color: $thirdary-color !important;
+}
+
+.mdc-select
+{
+  background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22%233bafda%22%20fill%3D%22%233bafda%22%20fill-rule%3D%22evenodd%22%20opacity%3D%220.54%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E) !important;
+}
+
+.mdc-select__selected-text
+{
+  color: $secondary-color !important;
+}
+
+.mdc-list
+{
+  color: $main-text-color;
+}
+
+.mdc-menu
+{
+  background-color: $main-color-3 !important; 
+}
+
+//C3 overrides
+.c3 line, .c3 path
+{
+  stroke: $main-text-color;
+}
+
+.c3 text
+{
+  stroke: $main-text-color;
+}
+
+path.domain 
+{ 
+	stroke: #ccc !important; 
+}
+.tick text 
+{ 
+	stroke: #ccc !important; 
+}
+
+.c3-legend-item text 
+{ 
+	stroke: #ccc !important;
+}
+.c3-grid line 
+{
+  stroke: $secondary-color; 
+}
+
+.c3-grid text
+{
+	fill: $secondary-color;
+}
+
+.c3-circle._expanded_ 
+{
+  	stroke: rgba(255, 255, 255, 0) !important; 
+}
+
+.c3-tooltip tr 
+{
+  border: 1px solid $secondary-color !important; 
+}
+
+.c3-tooltip th 
+{
+  background-color: $secondary-color !important;
+}
+
+.c3-tooltip td 
+{
+  background-color: #717171 !important;
+  color: #fff !important;
+ }
 
 //Scrollbar overrides
 .vue-scrollbar__scrollbar-vertical,
@@ -125,6 +210,17 @@ input:focus
 /********************************************
   Global CSS mixins
 */
+
+@mixin background-overlay($z-idx)
+{
+  position: fixed;
+  background-color: rgba(76, 76, 76, 0.7);
+  left: 0%;
+  top: 0%;
+  z-index: $z-idx;
+  height: 100vh;
+  width: 100vw;
+}
 
 @mixin fade-in-animation($duration)  //in seconds (s)
 {

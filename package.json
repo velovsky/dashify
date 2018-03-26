@@ -15,7 +15,7 @@
     "jquery": "^3.3.1",
     "vue": "^2.5.11",
     "vue-c3": "^1.1.1",
-    "vue-mdc": "0.0.10",
+    "vue-mdc-adapter": "^0.13.2",
     "vue-router": "^3.0.1",
     "vue2-scrollbar": "0.0.3",
     "vuex": "^3.0.1"

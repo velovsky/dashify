@@ -12,7 +12,6 @@
 import Topbar from './components/Topbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import PageContent from './components/PageContent'
-// import Test from './components/test'
 
 //Getters
 import { mapGetters } from 'vuex';
@@ -41,6 +40,10 @@ export default
 </script>
 
 <style lang="scss">
+$mdc-theme-accent: #41B883;
+$mdc-theme-background: #fff;
+$mdc-theme-primary: $secondary-color;
+@import 'vue-mdc-adapter/dist/styles';
 
 html, body
 {

@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import panels from './panels';
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store(
@@ -15,13 +17,22 @@ export const store = new Vuex.Store(
         {id: 2, name:"Father"},
         {id: 3, name:"John"},
         {id: 4, name:"Francis"}
-    ]
+    ],
+    panels
   },
   getters:
   {
     users: function(state)
     {
       return state.users;
+    },
+    getPanelsList: function(state)
+    {
+      return state.panels.list;
+    },
+    getPanelsBg: function(state)
+    {
+      return state.panels.backgrounds;
     },
     getGridLayout: function(state)
     {
