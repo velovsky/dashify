@@ -30,9 +30,10 @@ export const store = new Vuex.Store(
     {
       return state.panels.list;
     },
-    getPanelsBg: function(state)
+    getPanelsConfig: function(state)
     {
-      return state.panels.backgrounds;
+      // return panelId => state.panels.config[panelId];
+      return state.panels.config;
     },
     getGridLayout: function(state)
     {

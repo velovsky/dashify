@@ -53,19 +53,19 @@
         </mdc-button>
       </div>
       <div class="window-body">
-        <mdc-select v-model="selected" label="Select Panel">
+        <mdc-select v-model="page.popup.body.selected" label="Select Panel">
           <mdc-option v-for="(list,index) in getPanelsList" :value="list.id" :key="index">
             {{ list.uiName }}
           </mdc-option>
         </mdc-select>
-        <span>Selected: {{ selected }}</span>
-        <div>More Options....</div>
+        <span>Selected: {{ page.popup.body.selected }}</span>
+        <!-- <div>More Options....</div>
         <div class="radios">
           <mdc-radio v-model="answer" value="a" name="radios" label="Yes for sure"  />
           <mdc-radio v-model="answer" value="b" name="radios" label="definitely NO!" />
           <mdc-radio v-model="answer" value="c" name="radios" label="I guess"  checked />
         </div>
-        <span>Answer: {{ answer }}</span>
+        <span>Answer: {{ answer }}</span> -->
       </div>
       <div class="window-submit">
         <mdc-button raised
@@ -91,7 +91,6 @@ export default {
   data()
   {
     return{
-      selected: '',
       answer: '',
       gridChooser: 
       {
@@ -116,8 +115,10 @@ export default {
         overlayed: false,
         popup: 
         {
+          elementConfig: {},
           header: {uiName: "CLOSE", mdlIcon: "close", clickClb: this.closePanel},
-          submit: {uiName: "SUBMIT", mdlIcon: "", clickClb: this.closePanel}
+          body: {selected: undefined},
+          submit: {uiName: "SUBMIT", mdlIcon: "", clickClb: this.submitPanel}
         }
       }
     }
@@ -163,7 +164,22 @@ export default {
       var popup = jQuery(this.$refs.popup);
       popup.fadeIn(500); //TODO: for some reason css fade in animation isn't working
 
-      event.currentTarget.classList.add("filled");
+      this.page.popup.elementConfig = event.currentTarget.parentElement; //assign td element to config menu
+      this.page.popup.body.selected = this.page.popup.elementConfig.panelId;
+    },
+    submitPanel: function()
+    {
+      if(!this.page.popup.body.selected) //ignore TODO: emit warning => no panel selected
+        return;
+
+      //update panel config
+      this.page.popup.elementConfig.panelId = this.page.popup.body.selected; //update panel ID
+
+      //panel configed then fill it
+      this.page.popup.elementConfig.querySelector("div").classList.add("filled");
+
+      //close panel
+      this.closePanel();
     },
     closePanel: function()
     {

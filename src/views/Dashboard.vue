@@ -6,6 +6,7 @@
           <td :ref="'td_' + xIndex + '' + yIndex" v-for="(y,yIndex) in getGridLayout[xIndex].length" 
               v-if="getGridLayout[xIndex][yIndex].display !== 'none'"
               :key="yIndex"
+              :panelId ="getGridLayout[xIndex][yIndex].panelId"
               :rowSpan="getGridLayout[xIndex][yIndex].rowSpan"
               :colSpan="getGridLayout[xIndex][yIndex].colSpan">
               <vue-c3 :handler="handlers[xIndex][yIndex]"></vue-c3>
@@ -49,7 +50,7 @@ export default {
   },
   computed:
   {
-    ...mapGetters(['getGridLayout'])
+    ...mapGetters(['getGridLayout','getPanelsConfig'])
   },
   methods:
   {
@@ -136,6 +137,14 @@ export default {
             if(!cell)
               continue;
 
+            //get config
+            let panelId = cell.getAttribute("panelId");
+
+            if(!panelId)
+              continue;
+
+            var config = this.getPanelsConfig[panelId];
+
             var options = 
             {
               size:
@@ -143,14 +152,7 @@ export default {
                 height: cell.clientHeight * 0.9,
                 width: cell.clientWidth * 0.9
               },
-              data:
-              {
-                columns: 
-                [
-                  ['data1', 2*this.iterator, 4, 1, 5, 2, 1],
-                  ['data2', 7*this.iterator, 2, 4, 6, 10, 1]
-                ],
-              }
+              data: config.c3.data //TODO: EXTEND OPTIONS VAR WITH CONFIG
             }
 
             this.handlers[x][y].$emit('init',options);
