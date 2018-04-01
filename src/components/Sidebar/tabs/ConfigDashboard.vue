@@ -413,6 +413,7 @@ $submit-menu: 40px;
   @extend %box-sizing-border;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 10px;
   height: calc(100% - 20px - #{$header-height} - #{$submit-menu});
   width: 100%;

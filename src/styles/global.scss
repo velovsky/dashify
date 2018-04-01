@@ -141,7 +141,8 @@ path.domain
 }
 .c3-grid line 
 {
-  stroke: $secondary-color; 
+  // stroke: $secondary-color; 
+  stroke: $thirdary-color;
 }
 
 .c3-grid text

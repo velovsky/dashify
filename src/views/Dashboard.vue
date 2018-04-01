@@ -6,9 +6,18 @@
           <td :ref="'td_' + xIndex + '' + yIndex" v-for="(y,yIndex) in getGridLayout[xIndex].length" 
               v-if="getGridLayout[xIndex][yIndex].display !== 'none'"
               :key="yIndex"
-              :panelId ="getGridLayout[xIndex][yIndex].panelId"
+              :panelId="getGridLayout[xIndex][yIndex].panelId"
               :rowSpan="getGridLayout[xIndex][yIndex].rowSpan"
               :colSpan="getGridLayout[xIndex][yIndex].colSpan">
+              <div v-if="getGridLayout[xIndex][yIndex].panelId" class="header">
+                <div class="info">
+                  <div class="circle"></div>
+                  <span>{{ uiName(getGridLayout[xIndex][yIndex].panelId) }}</span>
+                </div>
+                <div class="more-options">
+                  <span><i class="material-icons">more_horiz</i></span> <!-- TODO: menu -->
+                </div>
+              </div>
               <vue-c3 :handler="handlers[xIndex][yIndex]"></vue-c3>
           </td>
         </tr>
@@ -31,8 +40,7 @@ export default {
   data()
   {
     return{
-      handlers: [],
-      iterator: 1
+      handlers: []
     }
   },
   created: function()
@@ -50,7 +58,7 @@ export default {
   },
   computed:
   {
-    ...mapGetters(['getGridLayout','getPanelsConfig'])
+    ...mapGetters(['getGridLayout','getPanelsConfig','getPanelsList'])
   },
   methods:
   {
@@ -67,6 +75,14 @@ export default {
             this.handlers[x][y] = new Vue();
         }
       }
+    },
+    uiName: function(panelId)
+    {
+      if(!panelId)
+        return "N/A";
+      
+      var element = this.getPanelsList.find( (el) => el.id === panelId );
+      return element.uiName.toUpperCase();
     },
     hideCells: function(bool)
     {
@@ -103,19 +119,71 @@ export default {
             if(!cell)
               continue;
 
+            var size = this.computeSize(cell);
+
             function resize(chart)
             {
               chart.resize({
-                height: cell.clientHeight * 0.9,
-                width: cell.clientWidth * 0.9
+                height: size.height,
+                width: size.width
               });
             }
 
-            this.handlers[x][y].$emit('dispatch', resize);
+            this.handlers[x][y].$emit('dispatch', resize); //TODO: maybe (also) create method for c3 resize
+
+            this.updateAxisTick(this.handlers[x][y]);
           }
 
       //unhide content
       this.hideCells(false);
+    },
+    updateAxisTick: function(handler)
+    {
+      var refHeight = 258; //px
+      var tickY = 4;
+      var refWidth = 500; //px
+      var tickX = 5;
+
+      function setTick(chart)
+      {
+        //y
+        let newHeight = chart.internal.currentHeight;
+        let newTickY = Math.floor( newHeight * tickY/refHeight );
+        if(newTickY < 1) newTickY = 1;
+        
+        chart.internal.config.axis_y_tick_count = newTickY;
+        chart.internal.config.axis_y_tick_format = chart.internal.d3.format('.0f');
+
+        //x
+        let newWidth = chart.internal.currentWidth;
+        let newTickX = Math.floor( newWidth * tickX/refWidth );
+        if(newTickX < 1) newTickX = 1;
+
+        chart.internal.config.axis_x_tick_count = newTickX;
+        chart.internal.config.axis_x_tick_format = chart.internal.d3.format('.1f');
+
+        chart.flush(); //refresh
+      }
+
+      handler.$emit('dispatch', setTick);
+    },
+    computeSize: function(cell)
+    {
+      var _height = cell.clientHeight;
+      var _width = cell.clientWidth - 10;
+
+      //header: only affects height
+      var header = cell.querySelector(".header");
+      var style = header.currentStyle || window.getComputedStyle(header);
+      _height -= ( parseInt(style.height) + parseInt(style.marginTop) + parseInt(style.marginBottom) );
+
+      var size = 
+      {
+        height: _height,
+        width: _width
+      }
+
+      return size;
     },
     generateC3: function()
     {
@@ -147,21 +215,17 @@ export default {
 
             var options = 
             {
-              size:
-              {
-                height: cell.clientHeight * 0.9,
-                width: cell.clientWidth * 0.9
-              },
-              data: config.c3.data //TODO: EXTEND OPTIONS VAR WITH CONFIG
+              size: this.computeSize(cell)
             }
 
+            options = Object.assign(config.c3,options); //extend
+
             this.handlers[x][y].$emit('init',options);
+            this.updateAxisTick(this.handlers[x][y]);
           }
 
-          //unhide content
-          this.hideCells(false);
-
-          this.iterator++;
+      //unhide content
+      this.hideCells(false);
     }
   },
   watch:
@@ -202,14 +266,53 @@ table td
   box-shadow: 0px 0px 7px 4px $box-shadow-color;
 }
 
-table td > div, table td > div > svg
+table td .header
 {
-  margin: auto;
-  max-width: 1000% !important;
-  max-height: 90% !important;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-weight: 600;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
-table td.hide > div
+table .header .more-options
+{
+  color: $secondary-color;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+table .header .info
+{
+  display: flex;
+}
+
+table .header .info .circle
+{
+  width: 18px;
+  height: 18px;
+  background: $secondary-color;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 10px;
+  vertical-align: middle;
+}
+
+table .header .info span
+{
+  padding-left: 10px;
+}
+
+// table td > div, table td > div > svg
+// {
+//   margin: auto;
+//   max-width: 1000% !important;
+//   max-height: 90% !important;
+// }
+
+table td.hide > div:last-child
 {
   display: none !important;
 }
